@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Workout And Diet Plan</title>
+    <style>
+       table,tr,th,td{
+            border: 5px solid black;
+            padding: 10px;
+            color: black;
+
+        }
+    </style>
+</head>
+<body style="background-color:aquamarine;"><br><br><br><br><br>
+    <fieldset>
+    <h1 style="text-align: center;color: green;">Enter The Customer Daily Diet And Workout Plan: </h1>
+    <form style="text-align: center;">
+
+        <h5>
+            Enter Morning Workout And Diet Plan:
+        </h5>
+        <input type="text" id="mrg">
+        
+        <h5>
+            Enter Afternoon Workout And Diet Plan:
+        </h5>
+        <input type="text" id="aft">
+        
+        <h5>
+            Enter Evening Workout And Diet Plan:
+        </h5>
+        <input type="text" id="eve">
+        
+        <h5>
+            Enter Night Workout And Diet Plan:
+        </h5>
+        <input type="text" id="nig"> <br> <br>
+        <input type="submit" style="background-color:red; border-color:blue; color:white" value="SUBMIT" id="b1">
+    </form>
+</fieldset>
+
+<center>
+    <table id="result" style="padding: 10px;">
+
+    </table></center>
+
+
+    <script>
+        // API for get requests
+        let fetchRes = fetch(
+"http://localhost:5000/get");
+        // fetchRes is the promise to resolve
+        // it by using.then() method
+        fetchRes.then(async data => {
+                var d = await data.json()
+                console.log(d)
+                var temp = ' <tr><th>MORNING</th><th>EVENING</th><th>AFTERNOON</th><th>NIGHT</th></tr>'
+                for(i of d)
+                {
+                    temp = temp + '<tr><td>'+i.mrg+'</td><td>'+i.aft+'</td><td>'+i.eve+'</td><td>'+i.nig+'</td></tr>'
+                }
+                
+                document.getElementById('result').innerHTML=temp;
+            })
+    </script>
+
+
+</body>
+
+<script>
+    const add=document.querySelector("#b1");
+    
+add.addEventListener("click",async()=>{
+ const n1=String(document.querySelector("#mrg").value);
+ const n2=String(document.querySelector("#aft").value);
+ const n3=String(document.querySelector("#eve").value);
+ const n4=String(document.querySelector("#nig").value);
+
+
+ fetch('http://localhost:5000/insert',{
+            mode:'cors',
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify({
+                mrg:n1,
+                aft:n2,
+                eve:n3,
+                nig:n4,
+            })
+        })
+        .then(async(e)=>{
+            alert("LOGIN SUCCESSFULL");
+            
+        })
+        .catch(async()=>{
+            console.log("ERROR");
+            result.innerHTML="ERROR";
+        })
+})
+</script>
+
+</html>
